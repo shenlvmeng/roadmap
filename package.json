@@ -1,25 +1,34 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "Traces",
+  "version": "0.1.0",
+  "description": "Integrate all gpx traces into one map. Show your mileage.",
   "main": "main.js",
-  "scripts": {
-    "start": "electron ."
+  "build": {
+    "appId": "com.electron.traces",
+    "mac": {
+      "category": "public.app-category.utilities"
+    }
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "scripts": {
+    "start": "electron .",
+    "pack":  "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "repository": "https://github.com/shenlvmeng/Traces-maker",
   "keywords": [
+    "traces",
+    "cycle",
+    "maker",
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
     "demo"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "shenlvmeng",
+  "license": "MIT",
   "devDependencies": {
     "electron": "~1.7.8"
   },
   "dependencies": {
     "gpx-parse": "^0.10.4"
-  }
+  },
+  "postinstall": "electron-builder install-app-deps"
 }

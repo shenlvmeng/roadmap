@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Traces - 你的运动轨迹整合工具</title>
     <style>
-    *{margin:0;padding:0}body,html{height:100%}body{display:flex;justify-content:center;align-items:center;font-family:"Helvetica Neue","Microsoft Yahei",Arial,sans-serif}.wrapper div{width:350px;margin:30px auto}label{margin-right:10px;font-weight:100}input{font:14px/2 "Helvetica Neue","Microsoft Yahei",Arial,sans-serif}input[type=text]{width:240px;padding:0 5px;border:1px solid #aaa;border-radius:2px;color:#333}input[type=file]{display:inline-flex;font-weight:100;outline:0}#upload{width:120px;font-size:16px;line-height:2;text-align:center;color:#fff;background-color:#4bb505;border-radius:4px;cursor:pointer}
+    *{margin:0;padding:0}body,html{height:100%}body{display:flex;justify-content:center;align-items:center;background:#fdfdfd;font-family:"Helvetica Neue","Microsoft Yahei",Arial,sans-serif}.wrapper div{width:350px;margin:30px auto}label{margin-right:10px;font-weight:100}input{font:14px/2 "Helvetica Neue","Microsoft Yahei",Arial,sans-serif}input[type=text]{width:240px;padding:0 5px;border:1px solid #aaa;border-radius:2px;color:#333}input[type=file]{display:inline-flex;font-weight:100;outline:0}#upload{width:120px;font-size:16px;line-height:2;text-align:center;color:#fff;background-color:#4bb505;border-radius:4px;cursor:pointer}label.must:before{content: '*';margin-left: -6px;color: #f00;}
     </style>
   </head>
   <body>
@@ -12,7 +12,7 @@
       <h1>Traces</h1>
       <div><label for="city">Step 1:</label><input type="text" id="city" placeholder="请输入设置为中心的城市名"></div>
       <div><label for="title">Step 2:</label><input type="text" id="title" placeholder="请输入想要的网页标题"></div>
-      <div><label for="ak">Step 3:</label><input type="text" id="ak" placeholder="请输入百度地图ak秘钥，必填"></div>
+      <div><label class="must" for="ak">Step 3:</label><input type="text" id="ak" placeholder="请输入百度地图ak秘钥，必填"></div>
       <div><label>Step 4:</label><input type="file" multiple id="files" accept=".gpx"></div>
       <div id="upload">Generate!</div>
     </div>

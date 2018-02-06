@@ -2,25 +2,26 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Hello World!</title>
+    <title>Traces - 你的运动轨迹整合工具</title>
+    <style>
+    *{margin:0;padding:0}body,html{height:100%}body{display:flex;justify-content:center;align-items:center;font-family:"Helvetica Neue","Microsoft Yahei",Arial,sans-serif}.wrapper div{width:350px;margin:30px auto}label{margin-right:10px;font-weight:100}input{font:14px/2 "Helvetica Neue","Microsoft Yahei",Arial,sans-serif}input[type=text]{width:240px;padding:0 5px;border:1px solid #aaa;border-radius:2px;color:#333}input[type=file]{display:inline-flex;font-weight:100;outline:0}#upload{width:120px;font-size:16px;line-height:2;text-align:center;color:#fff;background-color:#4bb505;border-radius:4px;cursor:pointer}
+    </style>
   </head>
   <body>
-    <input type="text" id="city" placeholder="请输入设置为中心的城市名">
-    <input type="text" id="title" placeholder="请输入想要的网页标题">
-    <input type="text" id="ak" placeholder="请输入ak秘钥">
-    <input type="file" multiple id="files" accept=".gpx">
-    <button id="upload">上传</button>
+    <div class="wrapper">
+      <h1>Traces</h1>
+      <div><label for="city">Step 1:</label><input type="text" id="city" placeholder="请输入设置为中心的城市名"></div>
+      <div><label for="title">Step 2:</label><input type="text" id="title" placeholder="请输入想要的网页标题"></div>
+      <div><label for="ak">Step 3:</label><input type="text" id="ak" placeholder="请输入百度地图ak秘钥，必填"></div>
+      <div><label>Step 4:</label><input type="file" multiple id="files" accept=".gpx"></div>
+      <div id="upload">Generate!</div>
+    </div>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')
     </script>
 <script type="text/template" id="template">
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><style>
-    body, html, #map {width: 100%; height: 100%; overflow: hidden; margin:0;}
-  </style><title><%=title%></title></head><body><div id="map"></div></body>
-&lt;script src="https://api.map.baidu.com/api?v=2.0&ak=<%=key%>">&lt;/script>
-&lt;script>!function(){var n=Array.apply(null,Array(<%=length%>)).map(function(n,a){return a+".json"});var a=new BMap.Map("map");a.centerAndZoom("<%=city%>"),a.addControl(new BMap.MapTypeControl({mapTypes:[BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]})),a.enableScrollWheelZoom(!0),function e(){var t,o,r;n.length&&(t=n.shift(),o=function(n){n&&e();try{var t=JSON.parse(n).map(function(n){return new BMap.Point(n.lng,n.lat)}),o=new BMap.Polyline(t);a.addOverlay(o)}catch(n){console.warn(n)}},(r=new XMLHttpRequest).open("GET",t,!0),r.onreadystatechange=function(){4===r.readyState&&200===r.status&&o(r.response)},r.send())}()}();
-&lt;/script></html>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><style>body, html, #map {width: 100%; height: 100%; overflow: hidden; margin:0;}</style><title><%=title%></title></head><body><div id="map"></div></body>&lt;script src="https://api.map.baidu.com/api?v=2.0&ak=<%=key%>">&lt;/script>&lt;script>!function(){var n=Array.apply(null,Array(<%=length%>)).map(function(n,a){return a+".json"});var a=new BMap.Map("map");a.centerAndZoom("<%=city%>"),a.addControl(new BMap.MapTypeControl({mapTypes:[BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]})),a.enableScrollWheelZoom(!0),function e(){var t,o,r;n.length&&(t=n.shift(),o=function(n){n&&e();try{var t=JSON.parse(n).map(function(n){return new BMap.Point(n.lng,n.lat)}),o=new BMap.Polyline(t);a.addOverlay(o)}catch(n){console.warn(n)}},(r=new XMLHttpRequest).open("GET",t,!0),r.onreadystatechange=function(){4===r.readyState&&200===r.status&&o(r.response)},r.send())}()}();&lt;/script></html>
 </script>
   </body>
 </html>

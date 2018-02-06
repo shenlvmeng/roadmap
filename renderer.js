@@ -44,7 +44,7 @@ document.getElementById('upload').addEventListener('click', () => {
 
   remote.require('fs').mkdir(OUTPUT_PATH, 0o777, err => {
     if (err) {
-      alert('文件夹创建失败，文件夹已存在或权限不够')
+      alert('文件夹创建失败：\n文件夹已存在或权限不够')
       return
     }
     // 生成模板HTML文件
@@ -63,7 +63,7 @@ document.getElementById('upload').addEventListener('click', () => {
     Array.from(fileList).forEach(serialize)
     remote.require('fs').writeFile(path.join(OUTPUT_PATH, 'index.html'), tmpl(template)(data).replace(/&lt;/g, '<'),'utf8', err => {
       if (err) throw err
-      else alert('生成完毕！将output文件夹下所有文件上传到服务器即可查看效果！')
+      else alert('生成完毕！\n将output文件夹下所有文件上传到服务器即可查看效果！')
     })
   })
 })

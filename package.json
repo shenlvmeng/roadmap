@@ -2,7 +2,7 @@
   "name": "Traces",
   "version": "0.1.0",
   "description": "Integrate all gpx traces into one map. Show your mileage.",
-  "main": "main.js",
+  "main": "app/main.js",
   "build": {
     "appId": "com.electron.traces",
     "mac": {
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "pack":  "electron-builder --dir",
+    "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
   "repository": "https://github.com/shenlvmeng/Traces-maker",
@@ -25,7 +25,8 @@
   "author": "shenlvmeng",
   "license": "MIT",
   "devDependencies": {
-    "electron": "~1.7.8"
+    "electron": "~1.7.8",
+    "electron-builder": "^19.56.0"
   },
   "dependencies": {
     "gpx-parse": "^0.10.4"

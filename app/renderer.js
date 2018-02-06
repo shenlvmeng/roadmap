@@ -7,7 +7,7 @@ const { remote } = require('electron')
 const { wgs2bd } = require('./gps')
 const { tmpl } = require('./utils')
 
-const OUTPUT_PATH = 'output'
+const OUTPUT_PATH = path.join(require('os').homedir(), 'Desktop', 'output')
 
 function serialize(file, index) {
   gpxParse.parseGpxFromFile(file.path, function(error, data) {

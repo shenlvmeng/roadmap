@@ -1,0 +1,7 @@
+
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><style>
+    body, html, #map {width: 100%; height: 100%; overflow: hidden; margin:0;}
+  </style><title>我的骑行记录</title></head><body><div id="map"></div></body>
+<script src="https://api.map.baidu.com/api?v=2.0&ak=K4lj4WauSIagEIiRkVY0lVt6IGgR6WM4"></script>
+<script>!function(){var n=Array.apply(null,Array(2)).map(function(n,a){return a+".json"});var a=new BMap.Map("map");a.centerAndZoom("北京"),a.addControl(new BMap.MapTypeControl({mapTypes:[BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]})),a.enableScrollWheelZoom(!0),function e(){var t,o,r;n.length&&(t=n.shift(),o=function(n){n&&e();try{var t=JSON.parse(n).map(function(n){return new BMap.Point(n.lng,n.lat)}),o=new BMap.Polyline(t);a.addOverlay(o)}catch(n){console.warn(n)}},(r=new XMLHttpRequest).open("GET",t,!0),r.onreadystatechange=function(){4===r.readyState&&200===r.status&&o(r.response)},r.send())}()}();
+</script></html>

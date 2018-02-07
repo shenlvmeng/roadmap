@@ -7,7 +7,17 @@ const { remote } = require('electron')
 const { wgs2bd } = require('./gps')
 const { tmpl } = require('./utils')
 
-const OUTPUT_PATH = path.join(require('os').homedir(), 'Desktop', 'output')
+const OUTPUT_PATH = path.join(require('os').homedir(), 'Desktop', 'traces-output')
+
+function gps2points(data) {
+  const track = data.tracks
+  const distance = track.reduce((acc, cur) => acc + cur.length(), 0).toFixed(3)
+  const startTime = new Date(+data.metadata.time - 480 * 60 * 1000).toLocaleString()
+  const flattenTrack = track.reduce((acc, cur) => (cur.segments.reduce((acc, cur) => acc.concat(cur), []).concat(acc)), [])
+  const time = (+flattenTrack[flattenTrack.length - 1].time - +data.metadata.time) / 1000
+  const points = flattenTrack.map(wgs2bd).map(({lat, lon}) => ({lat, lng: lon}))
+  return { points, distance, startTime, time }
+}
 
 function serialize(file, index) {
   gpxParse.parseGpxFromFile(file.path, function(error, data) {
@@ -15,11 +25,9 @@ function serialize(file, index) {
       alert('文件内容错误')
       return
     }
-    const track = data.tracks;
-    const flattenTrack = track.reduce((acc, cur) => (cur.segments.reduce((acc, cur) => acc.concat(cur), []).concat(acc)), [])
-    const points = flattenTrack.map(wgs2bd).map(({lat, lon}) => ({lat, lng: lon}))
+    const gpsData = gps2points(data)
     try {
-      const jsonData = JSON.stringify(points)
+      const jsonData = JSON.stringify(gpsData)
       const pathStr = path.join(OUTPUT_PATH, `${index}.json`)
       remote.require('fs').writeFile(pathStr, jsonData,'utf8', err => {
         if (err) throw err
@@ -44,7 +52,7 @@ document.getElementById('upload').addEventListener('click', () => {
 
   remote.require('fs').mkdir(OUTPUT_PATH, 0o777, err => {
     if (err) {
-      alert('文件夹创建失败：\n文件夹已存在或权限不够')
+      alert('文件夹创建失败：\n文件夹已存在或权限不足')
       return
     }
     // 生成模板HTML文件
@@ -57,7 +65,7 @@ document.getElementById('upload').addEventListener('click', () => {
     }
     if (!data.length) {
       if (!confirm('并未上传gpx数据，是否继续？\n点击“取消”返回上传数据，点击“确认”继续操作。')) {
-        return;
+        return
       }
     }
     Array.from(fileList).forEach(serialize)

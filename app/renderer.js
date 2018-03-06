@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 const path = require('path')
 const gpxParse = require('gpx-parse')
-const { remote } = require('electron')
+const { remote, shell } = require('electron')
 const { wgs2bd } = require('./gps')
 const { tmpl } = require('./utils')
 
@@ -45,6 +45,8 @@ document.getElementById('upload').addEventListener('click', () => {
   const title = document.getElementById('title').value.trim() || "我的骑行记录"
   const city = document.getElementById('city').value.trim() || "北京"
 
+  localStorage.setItem('traces', JSON.stringify({city, title, ak: key}))
+
   if (!key) {
     alert('您忘记填写ak秘钥了')
     return
@@ -74,4 +76,19 @@ document.getElementById('upload').addEventListener('click', () => {
       else alert('生成完毕！\n将output文件夹下所有文件上传到服务器即可查看效果！')
     })
   })
+})
+
+// 取消默认的a标签行为
+document.querySelectorAll('a[href^="http"]').forEach(node => {
+  node.addEventListener('click', function(event) {
+    event.preventDefault()
+    shell.openExternal(event.target.href)
+  });
+})
+
+const presets = JSON.parse(localStorage.getItem('traces'))
+Object.keys(presets).forEach(key => {
+  if (presets[key]) {
+    document.getElementById(key).value = presets[key]
+  }
 })

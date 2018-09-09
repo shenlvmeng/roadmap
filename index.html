@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            margin:0;
+            padding:0;
+        }
+        .locations,div.panel {
+            color:#fff;
+            position:absolute;
+        }
+        .hide .curr,.locations.hide {
+            display: none;
+        }
+        .close,.locations,div.panel {
+            position:absolute;
+        }
+        .city,.close {
+            cursor:pointer;
+        }
+        #map,body,html {
+            width:100%;
+            height:100%;
+            overflow:hidden;
+            margin:0;
+        }
+        div.panel {
+            top:10px;
+            left:20px;
+            width:210px;
+            font:lighter 14px/1.8 'Helvetica Neue','Microsoft Yahei',sans-serif;
+        }
+        .panel div {
+            background-color:rgba(63,81,181,.5);
+            margin-bottom:10px;
+            padding-left:5px;
+            border-radius:2px;
+        }
+        .panel .curr {
+            background-color:rgba(244,67,54,.5);
+            transition:opacity 1s ease-in-out;
+        }
+        .locations {
+            bottom:20px;
+            left:50%;
+            min-width:320px;
+            border-radius:2px;
+            transform:translateX(-50%);
+            font-size:14px;
+            font-weight:lighter;
+            background-color:rgba(63,81,181,.5);
+            box-sizing:border-box;
+            z-index:100;
+            transition:opacity ease-in-out .5s;
+            padding:10px 20px;
+        }
+        .locations>div {
+            line-height:1.5;
+        }
+        .locations span {
+            line-height:1;
+        }
+        .city {
+            text-decoration:underline;
+        }
+        .close {
+            right:5px;
+            color:#fdfdfd;
+            top:5px;
+            font-size:18px;
+        }
+        .shortcut {
+            width:70px;
+            font-family:PingFang SC, Helvetica Neue, Helvetica, Microsoft Yahei;
+            padding:3px 3px 0;
+        }
+        .shortcut img {
+            max-width:100%;
+            max-height:100%;
+            vertical-align:middle;
+            z-index:500;
+        }
+        .BMapLabel {
+            border:1px solid #eee!important;
+            box-shadow:0 1px 6px rgba(0,0,0,.2);
+        }
+        .shortcut::before {
+            content:'';
+            position:absolute;
+            left:32px;
+            bottom:-5px;
+            width:10px;
+            height:10px;
+            transform:rotate(45deg);
+            background:#fff;
+            z-index:-1;
+        }
+        .shortcut p {
+            color:#666;
+            text-align:center;
+            font-weight:600;
+            padding:5px 0;
+        }
+        .modal {
+            position:fixed;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            background:rgba(55,55,55,.6);
+            z-index:1000;
+            display:flex;
+            align-items:center;
+            justify-content:space-around;
+            transition:opacity .5s;
+            padding:30px;
+        }
+        .hidden {
+            opacity:0;
+            pointer-events:none;
+        }
+        .image-original {
+            max-width:50%;
+        }
+        .image-original img {
+            max-height:520px;
+            max-width:100%;
+        }
+        .image-info p {
+            color:#fff;
+            font-size:20px;
+            line-height:4;
+            font-weight:100;
+        }
+        .image-info .title {
+            color:#eee;
+            font-weight:400;
+        }
+        .hideBtn {
+            position:absolute;
+            right:40px;
+            top:20px;
+            font-size:30px;
+            color:#fff;
+            cursor:pointer;
+        }
+        .toggle-images {
+            position:absolute;
+            top:40px;
+            right:10px;
+            font-size:12px;
+            color:#fff;
+            border-radius:4px;
+            cursor:pointer;
+            padding:6px 15px;
+        }
+        .toggle-images.info {
+            background:#16be6b;
+        }
+        .toggle-images.error {
+            background:#ed4040;
+        }
+        .panel .copyright {
+            background: inherit;
+            color: #9a9a9a;
+            font-weight: 400;
+            font-size: 12px;
+        }
+    </style>
+    <title><%=title%></title>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="panel hide" id="panel">
+        <div>总里程：<span id="distance"></span> km</div>
+        <div>总时间：<span id="time"></span></div>
+        <div class="curr">当次里程：<span id="curr_distance"></span> km</div>
+        <div class="curr">运动时间：<span id="curr_time"></span></div>
+        <div class="curr">出发时间：<span id="start_time"></span></div>
+        <div class="copyright">Made with ❤ by shenlvmeng</div>
+    </div>
+    <div class="locations">
+        我去过的地方
+        <div class="province">省份：<span id="provinces"></span></div>
+        <div class="cities">城市：<span id="cities"></span></div>
+        <span class="close" id="close">×</span>
+    </div>
+    <div class="modal hidden" id="modal">
+        <div class="image-original">
+            <img src="" id="image">
+        </div>
+        <div class="image-info">
+            <p class="title">详情</p>
+            <p>经度：<span id="longitude"></span> N</p>
+            <p>纬度：<span id="latitude"></span> E</p>
+            <p>海拔：<span id="altitude"></span>m</p>
+            <p>摄于：<span id="create-time"></span></p>
+        </div>
+        <div class="hideBtn" id="hide">×</div>
+    </div>
+    <div id="toggle" class="toggle-images error">关闭图片展示</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+<script src="https://api.map.baidu.com/api?v=2.0&ak=K4lj4WauSIagEIiRkVY0lVt6IGgR6WM4"></script>
+<script>
+    (function(){
+        // axis part
+        const PI = 3.14159265358979324;
+        const x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+
+        function delta(lat, lon) {
+          // Krasovsky 1940
+          //
+          // a = 6378245.0, 1/f = 298.3
+          // b = a * (1 - f)
+          // ee = (a^2 - b^2) / a^2;
+          const a = 6378245.0; //  a: 卫星椭球坐标投影到平面地图坐标系的投影因子。
+          const ee = 0.00669342162296594323; //  ee: 椭球的偏心率。
+          let dLat = transformLat(lon - 105.0, lat - 35.0);
+          let dLon = transformLon(lon - 105.0, lat - 35.0);
+          const radLat = lat / 180.0 * PI;
+          let magic = Math.sin(radLat);
+          magic = 1 - ee * magic * magic;
+          const sqrtMagic = Math.sqrt(magic);
+          dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * PI);
+          dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * PI);
+          return {lat: dLat, lon: dLon};
+        }
+         
+        //WGS-84 to GCJ-02
+        function gcj_encrypt (wgsLat, wgsLon) {
+          if (outOfChina(wgsLat, wgsLon)) {
+            return {lat: wgsLat, lon: wgsLon};
+          }
+
+          const d = delta(wgsLat, wgsLon);
+          return {lat: wgsLat + d.lat, lon: wgsLon + d.lon};
+        }
+        //GCJ-02 to WGS-84
+        function gcj_decrypt (gcjLat, gcjLon) {
+          if (outOfChina(gcjLat, gcjLon)) {
+            return {lat: gcjLat, lon: gcjLon};
+          }
+           
+          const d = delta(gcjLat, gcjLon);
+          return {lat: gcjLat - d.lat, lon: gcjLon - d.lon};
+        }
+        //GCJ-02 to WGS-84 exactly
+        function gcj_decrypt_exact (gcjLat, gcjLon) {
+          const initDelta = 0.01;
+          const threshold = 0.000000001;
+          let dLat = initDelta, dLon = initDelta;
+          let mLat = gcjLat - dLat, mLon = gcjLon - dLon;
+          let pLat = gcjLat + dLat, pLon = gcjLon + dLon;
+          let wgsLat, wgsLon, i = 0;
+          while (1) {
+            wgsLat = (mLat + pLat) / 2;
+            wgsLon = (mLon + pLon) / 2;
+            let tmp = gcj_encrypt(wgsLat, wgsLon)
+            dLat = tmp.lat - gcjLat;
+            dLon = tmp.lon - gcjLon;
+            if ((Math.abs(dLat) < threshold) && (Math.abs(dLon) < threshold)) {
+              break;
+            }
+
+            if (dLat > 0) pLat = wgsLat; else mLat = wgsLat;
+            if (dLon > 0) pLon = wgsLon; else mLon = wgsLon;
+
+            if (++i > 10000) break;
+          }
+          //console.log(i);
+          return {lat: wgsLat, lon: wgsLon};
+        }
+        //GCJ-02 to BD-09
+        function bd_encrypt (gcjLat, gcjLon) {
+          const x = gcjLon, y = gcjLat;  
+          const z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);  
+          const theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);  
+          const bdLon = z * Math.cos(theta) + 0.0065;  
+          const bdLat = z * Math.sin(theta) + 0.006; 
+          return {lat: bdLat, lon: bdLon};
+        }
+        //BD-09 to GCJ-02
+        function bd_decrypt (bdLat, bdLon) {
+          const x = bdLon - 0.0065, y = bdLat - 0.006;  
+          const z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);  
+          const theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);  
+          const gcjLon = z * Math.cos(theta);  
+          const gcjLat = z * Math.sin(theta);
+          return {lat: gcjLat, lon: gcjLon};
+        }
+        //WGS-84 to Web mercator
+        //mercatorLat -> y mercatorLon -> x
+        function mercator_encrypt (wgsLat, wgsLon) {
+          let x = wgsLon * 20037508.34 / 180.;
+          let y = Math.log(Math.tan((90. + wgsLat) * PI / 360.)) / (PI / 180.);
+          y = y * 20037508.34 / 180.;
+          return {lat : y, lon: x};
+          /*
+          if ((Math.abs(wgsLon) > 180 || Math.abs(wgsLat) > 90))
+              return null;
+          var x = 6378137.0 * wgsLon * 0.017453292519943295;
+          var a = wgsLat * 0.017453292519943295;
+          var y = 3189068.5 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
+          return {'lat' : y, 'lon' : x};
+          //*/
+        }
+        // Web mercator to WGS-84
+        // mercatorLat -> y mercatorLon -> x
+        function mercator_decrypt (mercatorLat, mercatorLon) {
+          let x = mercatorLon / 20037508.34 * 180.;
+          let y = mercatorLat / 20037508.34 * 180.;
+          y = 180 / PI * (2 * Math.atan(Math.exp(y * PI / 180.)) - PI / 2);
+          return {lat: y, lon: x};
+          /*
+          if (Math.abs(mercatorLon) < 180 && Math.abs(mercatorLat) < 90)
+              return null;
+          if ((Math.abs(mercatorLon) > 20037508.3427892) || (Math.abs(mercatorLat) > 20037508.3427892))
+              return null;
+          var a = mercatorLon / 6378137.0 * 57.295779513082323;
+          var x = a - (Math.floor(((a + 180.0) / 360.0)) * 360.0);
+          var y = (1.5707963267948966 - (2.0 * Math.atan(Math.exp((-1.0 * mercatorLat) / 6378137.0)))) * 57.295779513082323;
+          return {'lat' : y, 'lon' : x};
+          //*/
+        }
+        // two point's distance
+        function distance (latA, lonA, latB, lonB) {
+          const earthR = 6371000.;
+          const x = Math.cos(latA * PI / 180.) * Math.cos(latB * PI / 180.) * Math.cos((lonA - lonB) * PI / 180);
+          const y = Math.sin(latA * PI / 180.) * Math.sin(latB * PI / 180.);
+          let s = x + y;
+          if (s > 1) s = 1;
+          if (s < -1) s = -1;
+          const alpha = Math.acos(s);
+          const distance = alpha * earthR;
+          return distance;
+        }
+        function outOfChina (lat, lon) {
+            if (lon < 72.004 || lon > 137.8347) {
+              return true;
+            }
+            if (lat < 0.8293 || lat > 55.8271) {
+              return true;
+            }
+            return false;
+        }
+        function transformLat (x, y) {
+            let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+            ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0;
+            ret += (20.0 * Math.sin(y * PI) + 40.0 * Math.sin(y / 3.0 * PI)) * 2.0 / 3.0;
+            ret += (160.0 * Math.sin(y / 12.0 * PI) + 320 * Math.sin(y * PI / 30.0)) * 2.0 / 3.0;
+            return ret;
+        }
+        function transformLon (x, y) {
+            let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+            ret += (20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0 / 3.0;
+            ret += (20.0 * Math.sin(x * PI) + 40.0 * Math.sin(x / 3.0 * PI)) * 2.0 / 3.0;
+            ret += (150.0 * Math.sin(x / 12.0 * PI) + 300.0 * Math.sin(x / 30.0 * PI)) * 2.0 / 3.0;
+            return ret;
+        }
+        function wgs2bd({lat, lon}) {
+          let gcj = gcj_encrypt(lat, lon);
+          return bd_encrypt(gcj.lat, gcj.lon);
+        }
+        // paint part
+        var length = 39;
+        var distance = 0;
+        var time = 0;
+        var activePoly = null;
+        var pool = Array.apply(null, Array(length)).map(function(v, i){return i+'.json';});
+        var provinces = [];
+        var cities = [];
+        function fromId(id){ return document.getElementById(id); }
+        function getJSON(path, callback) {
+            var request = new XMLHttpRequest();
+            request.open('GET', path, true);
+            request.onreadystatechange = function() {
+                if (request.readyState === 4 && request.status === 200) {
+                    callback(request.response);
+                }
+            }
+            request.send();
+        }
+        function paint() {
+            if (!pool.length) return;
+            getJSON(pool.shift(), function(res) {
+                if (res) paint();
+                try {
+                    var track = JSON.parse(res);
+                    distance += +track.distance;
+                    time += +track.time;
+                    var pois = track.points.map(function(point) {
+                        return new BMap.Point(point.lng, point.lat);
+                    });
+                    var polyline = new BMap.Polyline(pois, {
+                        enableMassClear: false
+                    });
+                    polyline.metadata = {
+                        distance: track.distance,
+                        time: track.time,
+                        startTime: track.startTime
+                    };
+                    polyline.addEventListener('click', function(event){
+                        clear();
+                        event.target.setStrokeColor("#f44336");
+                        var data = event.target.metadata
+                        fromId('curr_distance').innerText = data.distance;
+                        fromId('curr_time').innerText = parseTime(data.time);
+                        fromId('start_time').innerText = data.startTime;
+                        fromId('panel').className = "panel";
+                        activePoly = event.target;
+                        event.domEvent.stopPropagation();
+                    })
+                    map.addOverlay(polyline);
+                    // 渐进加载提高用户体验
+                    new BMap.Geocoder().getLocation(pois[0], function(res) {
+                        renderLocationList(res.addressComponents);
+                    });
+                    new BMap.Geocoder().getLocation(pois[~~(pois.length/2)], function(res) {
+                        renderLocationList(res.addressComponents);
+                    });
+                    new BMap.Geocoder().getLocation(pois[pois.length-1], function(res) {
+                        renderLocationList(res.addressComponents);
+                    });
+                    updateStatistics();
+                } catch(e) {
+                    console.warn(e);
+                }
+            })
+        }
+        function updateStatistics() {
+            fromId('distance').innerText = distance.toFixed(3);
+            fromId('time').innerText = parseTime(time);
+        }
+        function renderLocationList(addressComponents) {
+            var city = addressComponents.city;
+            var province = addressComponents.province;
+            if (!!province && provinces.indexOf(province) === -1) provinces.push(province);
+            if (!!city && cities.indexOf(city) === -1) cities.push(city);
+            fromId('provinces').innerText = provinces.map(function(ele){return ele.slice(0, -1)}).join(', ');
+            fromId('cities').innerHTML = cities.map(function(ele){
+                return "<span class='city'>" + ele.slice(0, -1) + "</span>";
+            }).join(', ');
+        }
+        function parseTime(time) {
+            if (time > 31536000) {
+                return ~~(time / 315636000) + '年 ' + parseTime(time % 31536000);
+            } else if (time > 2592000) {
+                return ~~(time / 2592000) + '月 ' + parseTime(time % 2592000);
+            } else if (time > 86400) {
+                return ~~(time / 86400) + '天 ' + parseTime(time % 86400);
+            } else if (time > 3600) {
+                return ~~(time / 3600) + 'h ' + parseTime(time % 3600);
+            } else if (time > 60) {
+                return ~~(time / 60) + 'm ' + parseTime(time % 60);
+            } else {
+                return time.toFixed(0) + 's';
+            }
+        }
+        function clear() {
+            if (activePoly) {
+                activePoly.setStrokeColor("#3a6bdb");
+                fromId('panel').className += " hide";
+                activePoly = null;
+            }
+        }
+        var map = new BMap.Map("map");
+        map.centerAndZoom("襄阳"); 
+        map.addControl(new BMap.MapTypeControl({
+            mapTypes:[
+                BMAP_NORMAL_MAP,
+                BMAP_HYBRID_MAP
+            ]
+        }));     
+        map.enableScrollWheelZoom(true);
+        map.addEventListener('click', function(event){
+            clear();
+        })
+        fromId('cities').addEventListener('click', function(event) {
+            if (event.target.className = 'city') {
+                map.centerAndZoom(event.target.innerText); 
+            }
+        })
+        fromId('close').addEventListener('click', function(event) {
+            event.target.parentNode.className += " hide";
+        })
+        paint();
+
+        // Image part
+        var i = 0;
+        var showImages = true;
+        var imageInfo = [];
+        function $(query) {
+            return document.querySelector(query);
+        }
+        function _(query) {
+            return document.querySelectorAll(query);
+        }
+        function convertLocation(pos) {
+            return pos[0] + pos[1] / 60 + pos[2] / 3600;
+        }
+        function get() {
+            const image = new Image();
+            image.src = `./images/${i}.jpg`;
+            image.onerror = function(err) {
+                draw();
+            }
+            image.onload = function() {
+                EXIF.getData(image, function() {
+                    imageInfo.push({
+                        vertical: this.height === 200,
+                        time: EXIF.getTag(this, 'DateTime'),
+                        altitude: EXIF.getTag(this, 'GPSAltitude').valueOf(),
+                        latitude: convertLocation(EXIF.getTag(this, 'GPSLatitude')),
+                        longitude: convertLocation(EXIF.getTag(this, 'GPSLongitude'))
+                    })
+                    get(++i);
+                });
+            }
+        }
+        get();
+        function draw() {
+            imageInfo.forEach(function(m, index) {
+                const correctPoint = wgs2bd({lat: m.latitude, lon: m.longitude});
+                const point = new BMap.Point(correctPoint.lon, correctPoint.lat);
+                const text = `<div class="shortcut" title="摄于${m.time}" id="${index}">
+                    <img src='./images/${index}.jpg' />
+                    <p>海拔 ${m.altitude.toFixed(1)}m</p>
+                </div>`;
+                const label = new BMap.Label(text, {
+                    position: point,
+                    offset: new BMap.Size(-38, m.vertical ? -134 : -95)
+                });
+                map.addOverlay(label);
+            });
+        }
+        $('#map').addEventListener('click', function(e) {
+            let t = e.target;
+            if (!t.id) t = t.parentNode;
+            if (t.id && t.id < imageInfo.length) {
+                const info = imageInfo[+t.id];
+                $('#modal').classList.remove('hidden');
+                $('#altitude').innerText = info.altitude.toFixed(3);
+                $('#longitude').innerText = info.longitude.toFixed(5);
+                $('#latitude').innerText = info.latitude.toFixed(5);
+                $('#image').src = `http://p2worlbdz.bkt.clouddn.com/c_${t.id}.jpg-depress`;
+                $('#create-time').innerText = `${info.time.slice(0, 11).replace(/:/g, '-')}${info.time.slice(11)}`;
+            }
+        });
+        $('#hide').addEventListener('click', function() {
+            $('#modal').classList.add('hidden');
+        });
+        $('#toggle').addEventListener('click', function() {
+            showImages = !showImages;
+            this.innerText = showImages ? '关闭图片展示' : '开启图片展示';
+            this.className = showImages ? 'toggle-images error' : 'toggle-images info';
+            showImages ? draw() : map.clearOverlays();
+        });
+    })()
+</script>
+</html>

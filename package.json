@@ -1,6 +1,6 @@
 {
   "name": "Traces",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Integrate all gpx traces into one map. Show your traces.",
   "main": "app/main.js",
   "build": {

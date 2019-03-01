@@ -14,7 +14,7 @@
 
 **非必选，但建议在应用设置里设置referer白名单为服务器域名，以防其他网站非法调用**
 
-![设置referer白名单](http://p2worlbdz.bkt.clouddn.com/g-1.png)
+![设置referer白名单](//pno6k7mfk.bkt.clouddn.com/g-1.png)
 
 ## 网页功能
 

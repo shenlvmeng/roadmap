@@ -492,6 +492,7 @@
         // Image part
         var i = 0;
         var showImages = true;
+        var imageKeys = ['Ah2b0x', 'Ah2cmq', 'Ah2DpQ', 'Ah2ftU', 'Ah2g00', 'Ah2hhF', 'Ah2Hn1', 'Ah2jhD', 'Ah2OAK', 'Ah2oc9', 'Ah2q76', 'Ah2rlj', 'Ah2s6s', 'Ah2TXR', 'Ah2WkT', 'Ah2XtO', 'Ah2yXn', 'Ah20fg', 'Ah25p4', 'Ah227V', 'AhRfbt'];
         var imageInfo = [];
         function $(query) {
             return document.querySelector(query);
@@ -504,14 +505,14 @@
         }
         function get() {
             const image = new Image();
-            image.src = `./images/${i}.jpg`;
+            image.src = `./images/${imageKeys[i]}.jpg`;
             image.onerror = function(err) {
                 draw();
             }
             image.onload = function() {
                 EXIF.getData(image, function() {
                     imageInfo.push({
-                        vertical: this.height === 200,
+                        vertical: this.height >= 150,
                         time: EXIF.getTag(this, 'DateTime'),
                         altitude: EXIF.getTag(this, 'GPSAltitude').valueOf(),
                         latitude: convertLocation(EXIF.getTag(this, 'GPSLatitude')),
@@ -546,7 +547,7 @@
                 $('#altitude').innerText = info.altitude.toFixed(3);
                 $('#longitude').innerText = info.longitude.toFixed(5);
                 $('#latitude').innerText = info.latitude.toFixed(5);
-                $('#image').src = `http://p2worlbdz.bkt.clouddn.com/c_${t.id}.jpg-depress`;
+                $('#image').src = `https://s2.ax1x.com/2019/04/07/${t.id}.md.jpg`;
                 $('#create-time').innerText = `${info.time.slice(0, 11).replace(/:/g, '-')}${info.time.slice(11)}`;
             }
         });

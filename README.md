@@ -1,6 +1,6 @@
-# traces-maker
+# roadmap
 
-> Start from [electron/electron-quick-start](https://github.com/electron/electron-quick-start)
+> Based on the efforts of [shenlvmeng/calendone](https://github.com/shenlvmeng/calendone)
 
 ## 如何使用
 
@@ -18,20 +18,11 @@
 
 ## 网页功能
 
-- 展示所有轨迹的叠加
-- 显示总里程、总时间
-- 点击路线高亮整条路径，并显示对应运动详情
-- 显示路径所在的所有城市和省份，点击跳转到城市所在位置
-- 城市和省份显示部分可以关闭
-
-## 学习资源
-
-- [electron.atom.io/docs](http://electron.atom.io/docs) - all of Electron's documentation
-- [electron.atom.io/community/#boilerplates](http://electron.atom.io/community/#boilerplates) - sample starter apps created by the community
-- [electron/electron-quick-start](https://github.com/electron/electron-quick-start) - a very basic starter Electron app
-- [electron/simple-samples](https://github.com/electron/simple-samples) - small applications with ideas for taking them further
-- [electron/electron-api-demos](https://github.com/electron/electron-api-demos) - an Electron app that teaches you how to use Electron
-- [hokein/electron-sample-apps](https://github.com/hokein/electron-sample-apps) - small demo apps for the various Electron APIs
+[x] 展示所有轨迹的叠加
+[x] 显示总里程、总时间
+[x] 点击路线高亮整条路径，并显示对应运动详情
+[x] 显示路径所在的所有城市和省份，点击跳转到城市所在位置
+[] 支持展示有gps定位的图片
 
 ## License
 

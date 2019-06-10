@@ -1,43 +1,69 @@
 {
-  "name": "Traces",
-  "version": "0.2.2",
-  "description": "Integrate all gpx traces into one map. Show your traces.",
-  "main": "app/main.js",
+  "name": "roadmap",
+  "version": "1.0.0",
+  "description": "Enjoy all your gps loci on Baidu map.",
+  "main": "index.js",
   "build": {
-    "appId": "com.electron.traces",
-    "productName": "Traces",
+    "appId": "com.example.traces",
+    "productName": "roadmap",
+    "files": [
+        "**/*"
+    ],
+    "directories": {
+        "buildResources": "dist",
+        "output": "build",
+        "app": "dist"
+    },
     "mac": {
       "category": "public.app-category.utilities",
-      "icon": "build/icon.png"
-    },
-    "dmg": {
-      "backgroundColor": "#fdfdfd",
-      "icon": "build/icon.png",
-      "window": {
-        "width": 800,
-        "height": 600
-      }
+      "target": "dmg",
+      "icon": "icon.icns"
     },
     "win": {
-      "icon": "build/icon.ico"
+      "target": "portable",
+      "icon": "icon.ico"
     },
     "linux": {
-      "icon": "build/icon.png"
+      "target": "AppImage"
+    },
+    "publish": {
+        "owner": "shenlvmeng",
+        "provider": "github",
+        "repo": "calendone"
     }
   },
   "scripts": {
-    "start": "electron .",
+    "lint": "tslint --project .",
+    "build-main": "webpack --config config/webpack.main.config.js",
+    "build-renderer": "webpack --config config/webpack.renderer.config.js",
+    "build": "cross-env NODE_ENV=production yarn build-main && yarn build-renderer",
+    "dev": "cross-env NODE_ENV=development yarn build-main && (yarn dev-server | electron ./dist/main)",
+    "dev-server": "cross-env NODE_ENV=development webpack-dev-server --mode=development --config config/dev/webpack.renderer.config --hot --inline",
+    "start": "yarn dev",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "release": "yarn build && yarn dist"
   },
-  "homepage": "https://github.com/shenlvmeng/Traces-maker",
-  "repository": "https://github.com/shenlvmeng/Traces-maker",
+  "lint-staged": {
+      "src/**/*.{ts,tsx}": [
+          "prettier --write",
+          "tslint --fix",
+          "git add"
+      ]
+  },
+  "husky": {
+      "hooks": {
+          "pre-commit": "lint-staged"
+      }
+  },
+  "homepage": "https://github.com/shenlvmeng/roadmap",
+  "repository": "https://github.com/shenlvmeng/roadmap",
   "keywords": [
-    "traces",
+    "loci",
     "cycle",
-    "maker",
     "Electron",
-    "demo"
+    "road",
+    "map"
   ],
   "author": {
     "name": "shenlvmeng",
@@ -45,11 +71,29 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron": "~1.8.2-beta5",
-    "electron-builder": "^19.56.0"
+    "@babel/core": "^7.2.0",
+    "babel-loader": "^8.0.4",
+    "cross-env": "^5.2.0",
+    "electron-builder": "^20.38.2",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.2",
+    "terser-webpack-plugin": "^1.1.0",
+    "ts-loader": "^4.0.0",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.2.1",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
+    "webpack-merge": "^4.1.4",
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "gpx-parse": "^0.10.4"
-  },
-  "postinstall": "electron-builder install-app-deps"
+    "parse-gpx": "^1.2.0",
+    "electron": "^4.0.2",
+    "electron-devtools-installer": "^2.2.4",
+    "electron-is-dev": "^1.0.1"
+  }
 }

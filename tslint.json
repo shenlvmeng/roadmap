@@ -1,0 +1,41 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint-config-airbnb",
+        "tslint-config-prettier"
+    ],
+    "jsRules": {},
+    "rules": {
+        "max-line-length": [
+            true,
+            120
+        ],
+        "trailing-comma": false,
+        "ter-indent": [
+            true,
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "variable-name": false,
+        "jsx-alignment": true,
+        "jsx-equals-spacing": [
+            true,
+            "never"
+        ],
+        "jsx-no-string-ref": true,
+        "jsx-self-close": true,
+        "jsx-wrap-multiline": true,
+        "import-name": false,
+        "no-console": {
+            "severity": "warn",
+            "options": ["log"]
+        },
+        "no-empty": false,
+        "object-literal-sort-keys": false,
+        "ordered-imports": false,
+        "array-type": [true, "array"]
+    },
+    "rulesDirectory": []
+}

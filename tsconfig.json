@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "build/dist",
+        "module": "commonjs",
+        "target": "es5",
+        "lib": [
+            "es2015",
+            "dom"
+        ],
+        "sourceMap": true,
+        "allowJs": true,
+        "moduleResolution": "node",
+        "jsx": "react",
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "importHelpers": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "build",
+        "app",
+        "build",
+        "webpack"
+    ]
+}

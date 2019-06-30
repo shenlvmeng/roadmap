@@ -72,7 +72,6 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.2.0",
-    "@types/jquery": "^3.3.30",
     "babel-loader": "^8.0.4",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
@@ -100,7 +99,6 @@
     "electron": "^4.0.2",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.0.1",
-    "jquery": "^3.4.1",
     "parse-gpx": "^1.2.0"
   }
 }

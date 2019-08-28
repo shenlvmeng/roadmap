@@ -1,6 +1,16 @@
 @main-font-family: BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 @main-color: #1376e6;
 
+@keyframes breath {
+    from {
+        color: @main-color;
+    }
+    to {
+        color: fade(@main-color, 70%);
+        transform: scale(1.2);
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -56,7 +66,9 @@ label.must:before {
     left: -12px;
     color: #f00;
 }
-
+.hidden {
+    display: none;
+}
 #root {
     display: flex;
     align-items: center;
@@ -119,9 +131,6 @@ label.must:before {
             padding-left: 32px;
         }
     }
-    .hidden {
-        display: none;
-    }
     .length-hint {
         margin-left: 8px;
         color: #7e7e7e;
@@ -138,6 +147,21 @@ label.must:before {
         padding: 3px 8px;
         font-size: 10px;
     }
+}
+.loading-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: #fdfdfd;
+    z-index: 10;
+    opacity: 0.9;
+    color: @main-color;
+    text-align: center;
+    font-size: 26px;
+    line-height: 100vh;
+    animation: breath 2s ease-in-out infinite alternate;
 }
 #generate {
     display: block;

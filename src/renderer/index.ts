@@ -104,7 +104,7 @@ async function generateTracks() {
     await convertGpxFiles(Array.from(tracks).map(file => file.path), OUTPUT_DATA_PATH);
 }
 
-$("#generate").on("click", async () => {
+async function generate() {
     const isExist: boolean = await new Promise(res => {
         fs.access(OUTPUT_ROOT_PATH, err => {
             res(!err);
@@ -158,4 +158,13 @@ $("#generate").on("click", async () => {
         )
     ]);
     alert("生成完毕！请在桌面查看");
+}
+
+$("#generate").on("click", async () => {
+    $(".loading-mask").removeClass("hidden");
+    try {
+        await generate();
+    } finally {
+        $(".loading-mask").addClass("hidden");
+    }
 });

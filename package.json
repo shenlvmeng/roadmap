@@ -34,6 +34,7 @@
   },
   "scripts": {
     "lint": "tslint --project .",
+    "test": "NODE_ENV=test jest -i",
     "build-main": "webpack --config config/webpack.main.config.js",
     "build-renderer": "webpack --config config/webpack.renderer.config.js",
     "build": "cross-env NODE_ENV=production yarn build-main && yarn build-renderer",
@@ -72,19 +73,23 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.2.0",
+    "@types/jest": "^24.0.17",
     "@types/jquery": "^3.3.30",
+    "@types/rimraf": "^2.0.2",
     "babel-loader": "^8.0.4",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "electron-builder": "^20.38.2",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^1.2.0",
+    "jest": "^24.9.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.2",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.1.0",
+    "ts-jest": "^24.0.2",
     "ts-loader": "^4.0.0",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.1",
@@ -97,10 +102,14 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "date-fns": "^1.30.1",
     "electron": "^4.0.2",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.0.1",
+    "gpx-parse": "^0.10.4",
     "jquery": "^3.4.1",
-    "parse-gpx": "^1.2.0"
+    "parse-gpx": "^1.2.0",
+    "rimraf": "^3.0.0",
+    "write": "^1.0.3"
   }
 }

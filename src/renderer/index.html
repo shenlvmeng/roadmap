@@ -19,6 +19,45 @@
     </script>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <div class="main">
+            <h1>Roadmap</h1>
+            <div class="content">
+                <section>
+                    <div>
+                        <label for="city">中心城市：</label>
+                        <input type="text" id="city" placeholder="北京">
+                    </div>
+                    <div>
+                        <label for="title">网页标题：</label>
+                        <input type="text" id="title" placeholder="我的路书">
+                    </div>
+                    <div>
+                        <label class="must">gpx文件：</label>
+                        <button id="upload-gpx">上 传</button>
+                        <span id="gpx-length" class="length-hint"></span>
+                        <input type="file" accept=".gpx" id="gps-track" multiple />
+                        <div class="hint">可以从运动健身app或设备中导出后缀为".gpx"的文件</div>
+                    </div>
+                </section>
+                <section class="images">
+                    <div>
+                        <label>图片文件:</label>
+                        <button id="upload-image">上 传</button>
+                        <span id="image-length" class="length-hint"></span>
+                        <input type="file" accept="image/jpeg" id="image" multiple />
+                    </div>
+                    <div>
+                        <label>图片标题:</label>
+                        <input type="text" id="image-title" placeholder="使用逗号分隔" />
+                        <div class="hint">用于加载图片，顺序不需要和图片保持一致</div>
+                        <div class="hint warning hidden">标题数目和图片不匹配</div>
+                        <div class="titles" id="image-titles"></div>
+                    </div>
+                </section>
+            </div>
+            <button id="generate">Generate!</button>
+        </div>
+    </div>
 </body>
 </html>

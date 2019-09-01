@@ -25,6 +25,7 @@
 ### Electron部分
 
 ```bash
+yarn install
 # test
 yarn dev
 # start = dev

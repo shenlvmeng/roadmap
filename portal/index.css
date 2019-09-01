@@ -173,12 +173,11 @@ body,
   position: absolute;
   right: 20px;
   bottom: 20px;
-  color: #c7c7c7;
+  color: #a6a6a6;
   font-weight: 400;
   font-size: 12px;
 }
 .toggle-images {
-  display: none;
   position: absolute;
   top: 40px;
   right: 10px;
@@ -188,8 +187,8 @@ body,
   color: #fff;
   cursor: pointer;
 }
-.toggle-images.visible {
-  display: block;
+.toggle-images.hidden {
+  display: none;
 }
 .toggle-images.enable {
   background: #16be6b;

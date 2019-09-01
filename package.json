@@ -29,7 +29,7 @@
     "publish": {
       "owner": "shenlvmeng",
       "provider": "github",
-      "repo": "calendone"
+      "repo": "roadmap"
     }
   },
   "scripts": {
@@ -79,6 +79,7 @@
     "@types/jquery": "^3.3.30",
     "@types/rimraf": "^2.0.2",
     "babel-loader": "^8.0.4",
+    "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "electron-builder": "^20.38.2",

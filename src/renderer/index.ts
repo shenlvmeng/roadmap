@@ -95,7 +95,7 @@ async function generateImgs() {
     if (!checkTitleImgCount()) {
         alert("标题数目和图片不一致，可能会影响展示效果");
     }
-    await minifyImgs(Array.from(images), { width: 70 }, OUTPUT_IMAGE_PATH);
+    await minifyImgs(Array.from(images), { width: 150 }, OUTPUT_IMAGE_PATH);
 }
 
 async function generateTracks() {

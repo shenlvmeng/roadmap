@@ -202,6 +202,10 @@ async function run() {
                 image.src = `./data/images/${title}.jpg`;
                 image.onload = () => {
                     EXIF.getData(image, function(this: any) {
+                        if (!EXIF.getTag(this, "GPSLatitude")) {
+                            res();
+                            return;
+                        }
                         imageInfo.push({
                             title,
                             vertical: this.height >= 150,

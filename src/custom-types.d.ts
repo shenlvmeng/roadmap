@@ -1,3 +1,3 @@
-declare module "parse-gpx";
+declare module "gpx-parse";
 declare module "write";
 declare module "*.html";

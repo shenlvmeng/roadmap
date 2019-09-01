@@ -74,8 +74,10 @@ label.must:before {
     align-items: center;
     justify-content: center;
     background: #fdfdfd;
+    -webkit-app-region: drag;
 }
 .main {
+    -webkit-app-region: no-drag;
     h1 {
         margin-bottom: 32px;
     }
@@ -122,6 +124,7 @@ label.must:before {
         color: #f00;
     }
     section {
+        max-width: 370px;
         padding-right: 32px;
         & > div {
             margin-bottom: 20px;
@@ -137,13 +140,16 @@ label.must:before {
     }
     .titles {
         margin-top: 8px;
+        max-height: 180px;
+        overflow-y: auto;
     }
     .title-item {
+        display: inline-block;
         color: @main-color;
         border: 1px solid @main-color;
         border-radius: 4px;
         background-color: #ecf3fd;
-        margin: 0 8px 8px 0;
+        margin: 0 4px 4px 0;
         padding: 3px 8px;
         font-size: 10px;
     }

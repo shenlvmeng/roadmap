@@ -2,7 +2,6 @@
 // 来源：http://www.oschina.net/code/snippet_260395_39205
 // 感谢原作者！
 
-const EARTH_RADIUS = 6367;
 const PI = 3.14159265358979324;
 const x_pi = (3.14159265358979324 * 3000.0) / 180.0;
 
@@ -172,23 +171,6 @@ function transformLon(x: number, y: number) {
     ret += ((20.0 * Math.sin(x * PI) + 40.0 * Math.sin((x / 3.0) * PI)) * 2.0) / 3.0;
     ret += ((150.0 * Math.sin((x / 12.0) * PI) + 300.0 * Math.sin((x / 30.0) * PI)) * 2.0) / 3.0;
     return ret;
-}
-
-function deg2Rad(deg: number) {
-    return (deg * Math.PI) / 180;
-}
-export function calcDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-    const dLat = deg2Rad(lat2 - lat1);
-    const dLon = deg2Rad(lon2 - lon1);
-
-    const radLat1 = deg2Rad(lat1);
-    const radLat2 = deg2Rad(lat2);
-
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(radLat1) * Math.cos(radLat2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return EARTH_RADIUS * c;
 }
 
 export function wgs2bd(pos: { lat: number; lon: number }) {

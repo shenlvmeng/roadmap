@@ -1,21 +1,12 @@
-import parseGpx from "parse-gpx";
+import gpxParse from "gpx-parse";
 import writeFile from "write";
 import * as path from "path";
 
-import { calcDistance, wgs2bd } from "./axis";
-
-interface RawTrackPoint {
-    latitude: string;
-    elevation: string;
-    longitude: string;
-    timestamp: string;
-    heartrate?: string; // 心率
-    cadence?: string; // 节奏
-}
+import { wgs2bd } from "./axis";
 
 interface TrackPoint {
     lat: number;
-    elevation: number;
+    elevation?: number;
     lon: number;
     timestamp: number;
 }
@@ -31,7 +22,32 @@ export async function convert(path: string) {
     if (!path) {
         throw Error("Gpx file path is required!");
     }
-    const res: RawTrackPoint[] = await parseGpx(path);
+    let distance = 0;
+    const res = await new Promise<TrackPoint[]>(resolve => {
+        gpxParse.parseGpxFromFile(path, (err: Error, data: any) => {
+            if (err || !data) {
+                throw Error("文件内容错误");
+            }
+            const track: any[] = data.tracks;
+            const flattenTrack: any[] = track.reduce(
+                (acc: any, cur: any) =>
+                    cur.segments.reduce((prev: any, curr: any) => prev.concat(curr), []).concat(acc),
+                <any>[]
+            );
+            distance = track.reduce((prev: number, curr: any) => prev + curr.length(), 0);
+            const points: TrackPoint[] = flattenTrack.map(t => {
+                const { lat, lon, elevation, time } = t;
+                const point = wgs2bd({ lat, lon });
+                return {
+                    lat: point.lat,
+                    lon: point.lon,
+                    elevation: elevation ? +elevation.toFixed(2) : 0,
+                    timestamp: +time
+                };
+            });
+            resolve(points);
+        });
+    });
     if (!res) {
         return JSON.stringify({
             points: [],
@@ -40,43 +56,15 @@ export async function convert(path: string) {
             duration: 0
         });
     }
-    const points: TrackPoint[] = res.map(p => {
-        const point = wgs2bd({
-            lat: +p.latitude,
-            lon: +p.longitude
-        });
-        return {
-            lat: point.lat,
-            lon: point.lon,
-            elevation: +(+p.elevation).toFixed(2),
-            timestamp: +new Date(p.timestamp)
-        };
-    });
-
-    const { distance } = points.reduce(
-        (prev, curr) => {
-            const delta = prev.lat ? calcDistance(prev.lat, prev.lon, curr.lat, curr.lon) : 0;
-            return {
-                distance: prev.distance + delta,
-                lat: curr.lat,
-                lon: curr.lon
-            };
-        },
-        {
-            distance: 0,
-            lat: 0,
-            lon: 0
-        }
-    );
 
     const startTime = +new Date(res[0].timestamp);
     const duration = +new Date(res[res.length - 1].timestamp) - +new Date(res[0].timestamp);
 
     const track: Track = {
-        points,
         distance,
         startTime,
-        duration
+        duration,
+        points: res
     };
     return JSON.stringify(track);
 }

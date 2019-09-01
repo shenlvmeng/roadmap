@@ -1,6 +1,6 @@
 {
   "name": "roadmap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enjoy all your gps loci on Baidu map.",
   "main": "index.js",
   "build": {
@@ -34,7 +34,7 @@
   },
   "scripts": {
     "lint": "tslint --project .",
-    "test": "NODE_ENV=test jest -i",
+    "test": "cross-env NODE_ENV=test jest -i",
     "build-main": "webpack --config config/webpack.main.config.js",
     "build-renderer": "webpack --config config/webpack.renderer.config.js",
     "build": "cross-env NODE_ENV=production yarn build-main && yarn build-renderer",
@@ -114,7 +114,6 @@
     "electron-is-dev": "^1.0.1",
     "gpx-parse": "^0.10.4",
     "jquery": "^3.4.1",
-    "parse-gpx": "^1.2.0",
     "rimraf": "^3.0.0",
     "write": "^1.0.3"
   }

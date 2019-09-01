@@ -6,6 +6,8 @@ describe('gpx file to json test', () => {
     let track: any;
     it('can convert', async () => {
         const filePath = path.join(__dirname, './23km.gpx');
+        track = JSON.parse(await convert(path.join(__dirname, './76km.gpx')));
+        expect(track).not.toBeNull();
         track = JSON.parse(await convert(filePath));
         expect(track).not.toBeNull();
     });

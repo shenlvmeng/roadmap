@@ -5794,13 +5794,6 @@ parse-color@^1.0.0:
   dependencies:
     color-convert "~0.5.0"
 
-parse-gpx@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/parse-gpx/download/parse-gpx-1.2.0.tgz#1a38063f78736e7a23ae1389ff8933a304474fd1"
-  integrity sha1-GjgGP3hzbnojrhOJ/4kzowRHT9E=
-  dependencies:
-    xml2js "^0.4.16"
-
 parse-json@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npm.taobao.org/parse-json/download/parse-json-2.2.0.tgz#f480f40434ef80741f8469099f8dea18f55a4dc9"
@@ -8256,7 +8249,7 @@ xml-name-validator@^3.0.0:
   resolved "https://registry.npm.taobao.org/xml-name-validator/download/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha1-auc+Bt5NjG5H+fsYH3jWSK1FfGo=
 
-xml2js@^0.4.16, xml2js@^0.4.4:
+xml2js@^0.4.4:
   version "0.4.19"
   resolved "https://registry.npm.taobao.org/xml2js/download/xml2js-0.4.19.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fxml2js%2Fdownload%2Fxml2js-0.4.19.tgz#686c20f213209e94abf0d1bcf1efaa291c7827a7"
   integrity sha1-aGwg8hMgnpSr8NG88e+qKRx4J6c=

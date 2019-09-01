@@ -2,7 +2,7 @@ import parseGpx from "parse-gpx";
 import writeFile from "write";
 import * as path from "path";
 
-import { calcDistance } from "./axis";
+import { calcDistance, wgs2bd } from "./axis";
 
 interface RawTrackPoint {
     latitude: string;
@@ -14,13 +14,13 @@ interface RawTrackPoint {
 }
 
 interface TrackPoint {
-    latitude: number;
+    lat: number;
     elevation: number;
-    longitude: number;
+    lon: number;
     timestamp: number;
 }
 
-interface Track {
+export interface Track {
     points: TrackPoint[];
     distance: number;
     startTime: number;
@@ -40,20 +40,26 @@ export async function convert(path: string) {
             duration: 0
         });
     }
-    const points: TrackPoint[] = res.map(p => ({
-        latitude: +p.latitude,
-        longitude: +p.longitude,
-        elevation: +(+p.elevation).toFixed(2),
-        timestamp: +new Date(p.timestamp)
-    }));
+    const points: TrackPoint[] = res.map(p => {
+        const point = wgs2bd({
+            lat: +p.latitude,
+            lon: +p.longitude
+        });
+        return {
+            lat: point.lat,
+            lon: point.lon,
+            elevation: +(+p.elevation).toFixed(2),
+            timestamp: +new Date(p.timestamp)
+        };
+    });
 
     const { distance } = points.reduce(
         (prev, curr) => {
-            const delta = prev.lat ? calcDistance(prev.lat, prev.lon, curr.latitude, curr.longitude) : 0;
+            const delta = prev.lat ? calcDistance(prev.lat, prev.lon, curr.lat, curr.lon) : 0;
             return {
                 distance: prev.distance + delta,
-                lat: curr.latitude,
-                lon: curr.longitude
+                lat: curr.lat,
+                lon: curr.lon
             };
         },
         {

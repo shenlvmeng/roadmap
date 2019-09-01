@@ -1,15 +1,14 @@
 /* eslint-disable */
 const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-    target: 'electron-renderer',
+    target: 'web',
     entry: {
-        index: './src/renderer/index',
+        portal: './src/portal/index.ts'
     },
-    // 产出路径
     output: {
-        path: path.join(__dirname, '../../dist/assets/'),
-        globalObject: 'this'
+        path: path.join(__dirname, '../../portal/'),
     },
     module: {
         rules: [
@@ -17,7 +16,7 @@ module.exports = {
                 test: /\.(css|less)$/,
                 use: [
                     {
-                        loader: 'style-loader'
+                        loader: MiniCssExtractPlugin.loader,
                     },
                     {
                         loader: 'css-loader'
@@ -36,16 +35,6 @@ module.exports = {
                         transpileOnly: true
                     }
                 }]
-            },
-            {
-                test: /\.html$/,
-                loader: 'html-loader',
-                options: {
-                    attrs: [],
-                    minimize: true,
-                    collapseWhitespace: false,
-                    removeAttributeQuotes: false
-                }
             }
         ]
     },

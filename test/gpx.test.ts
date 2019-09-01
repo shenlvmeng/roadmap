@@ -24,8 +24,8 @@ describe('test baidu axis convert', () => {
     beforeAll(async () => {
         const track = JSON.parse(await convert(path.join(__dirname, './23km.gpx')));
         const point = track.points[0];
-        lat = point.latitude;
-        lon = point.longitude;
+        lat = point.lat;
+        lon = point.lon;
     });
 
     it('convert successfully', () => {

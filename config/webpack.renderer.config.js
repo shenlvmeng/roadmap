@@ -9,7 +9,7 @@ module.exports = merge({
     plugins: [
         new HtmlWebpackPlugin({
             filename: '../pages/index.html',
-            template: 'src/renderer/templates/index.html',
+            template: 'src/renderer/index.html',
             chunks: ['index']
         }),
         new CopyWebpackPlugin([

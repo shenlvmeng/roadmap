@@ -7,11 +7,13 @@ import rimraf from "rimraf";
 import { convertGpxFiles } from "../main/gpx2json";
 import { minifyImgs } from "./image";
 
+import template from "../../portal/output.html";
 import "./index.less";
 
 const OUTPUT_ROOT_PATH = path.join(require("os").homedir(), "Desktop", "roadmap-output");
 const OUTPUT_DATA_PATH = path.join(OUTPUT_ROOT_PATH, "data");
 const OUTPUT_IMAGE_PATH = path.join(OUTPUT_DATA_PATH, "images");
+const IMAGES_STORAGE_KEY = "_ROADMAP_IMAGES_TITLE";
 
 let images: File[] = [];
 let tracks: File[] = [];
@@ -80,8 +82,8 @@ $("#gps-track").on("change", async function() {
 });
 
 $("#image-title").on("input", (e: JQuery.ChangeEvent<HTMLInputElement>) => {
-    const titleStr: string = e.currentTarget.value.trim();
-    titles = [...new Set(titleStr.split(/,|，/g))].filter(t => t);
+    const titleStr: string = e.currentTarget.value;
+    titles = [...new Set(titleStr.split(/,|，/g))].map(t => t.trim()).filter(t => t);
     $("#image-titles").html(titles.map(title => `<span class="title-item">${title}.jpg</span>`).join(""));
     checkTitleImgCount();
 });
@@ -155,8 +157,11 @@ async function generate() {
                 null,
                 "\t"
             )
-        )
+        ),
+        // 生成模板文件
+        writeFile.promise(path.join(OUTPUT_ROOT_PATH, "index.html"), template)
     ]);
+    localStorage.setItem(IMAGES_STORAGE_KEY, titles.join(","));
     alert("生成完毕！请在桌面查看");
 }
 
@@ -168,3 +173,17 @@ $("#generate").on("click", async () => {
         $(".loading-mask").addClass("hidden");
     }
 });
+
+function init() {
+    // 缓存本地输入过的图片标题
+    const imgTitleStr = localStorage.getItem(IMAGES_STORAGE_KEY);
+    if (imgTitleStr) {
+        const imgTitles: string[] = imgTitleStr.split(",");
+        titles = imgTitles;
+        checkTitleImgCount();
+        $("#image-title").val(imgTitleStr || "");
+        $("#image-titles").html(titles.map(title => `<span class="title-item">${title}.jpg</span>`).join(""));
+    }
+}
+
+init();

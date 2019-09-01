@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的路书</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+    <script src="https://api.map.baidu.com/api?v=2.0&ak=K4lj4WauSIagEIiRkVY0lVt6IGgR6WM4"></script>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="panel hide" id="panel">
+        <div>总里程：<span id="distance"></span> km</div>
+        <div>总时长：<span id="time"></span></div>
+        <div class="curr">当次里程：<span id="curr_distance"></span> km</div>
+        <div class="curr">运动时长：<span id="curr_time"></span></div>
+        <div class="curr">出发时刻：<span id="start_time"></span></div>
+    </div>
+    <div class="locations">
+        走过的地方
+        <div class="province">省：<span id="provinces"></span></div>
+        <div class="cities">市：<span id="cities"></span></div>
+        <span class="close" id="close">×</span>
+    </div>
+    <div class="modal invisible" id="modal">
+        <div class="image-original">
+            <img id="photo">
+        </div>
+        <div class="image-info">
+            <p>经度：<span id="longitude"></span>N</p>
+            <p>纬度：<span id="latitude"></span>E</p>
+            <p>海拔：<span id="altitude"></span>m</p>
+            <p>摄于：<span id="create-time"></span></p>
+        </div>
+        <div class="hide-btn" id="hide">×</div>
+    </div>
+    <div class="copyright">
+        Made by <a href="//github.com/shenlvmeng/roadmap" target="_blank" rel="noopener noreferrer">roadmap</a>
+    </div>
+    <div id="toggle" class="toggle-images disable hidden">关闭图片展示</div>
+</body>
+</html>

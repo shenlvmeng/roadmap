@@ -1,0 +1,200 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-touch-callout: none;
+}
+body {
+  font-family: BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-size: 14px;
+}
+a {
+  color: inherit;
+  outline: none;
+}
+ul,
+li {
+  list-style: none;
+}
+img {
+  -webkit-touch-callout: none;
+  touch-action: none;
+}
+button {
+  outline: none;
+  appearance: none;
+  box-shadow: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+button:not([disabled]):hover {
+  opacity: 0.8;
+}
+::selection {
+  color: #fff;
+  background-color: #1376e6;
+}
+html,
+body,
+#map {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.locations,
+.panel {
+  color: #fff;
+  position: absolute;
+}
+.panel {
+  top: 20px;
+  left: 20px;
+  width: 250px;
+  font-weight: 300;
+}
+.panel > div {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: rgba(19, 118, 230, 0.5);
+}
+.panel .curr {
+  background-color: rgba(251, 64, 69, 0.5);
+  transition: opacity 1s ease-in-out;
+}
+.locations {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 320px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 300;
+  background-color: rgba(19, 118, 230, 0.5);
+  z-index: 100;
+  transition: opacity 0.5s ease-in-out;
+}
+.locations .province {
+  margin: 8px 0;
+}
+.locations .city {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.locations .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 18px;
+  cursor: pointer;
+}
+.hide .curr,
+.locations.hide {
+  display: none;
+}
+.shortcut {
+  width: 70px;
+  padding: 3px 3px 0;
+}
+.shortcut img {
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+  z-index: 500;
+  cursor: pointer;
+}
+.shortcut::before {
+  content: '';
+  position: absolute;
+  left: 32px;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background: #fff;
+  z-index: -1;
+}
+.shortcut p {
+  color: #666;
+  text-align: center;
+  font-weight: 600;
+  padding: 5px 0;
+}
+.BMapLabel {
+  border: 1px solid #eee !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 30px;
+  background: rgba(77, 77, 77, 0.6);
+  z-index: 1000;
+  transition: opacity 0.5s;
+}
+.modal .image-original {
+  max-width: 50%;
+}
+.modal .image-original img {
+  max-height: 520px;
+  max-width: 100%;
+}
+.modal .image-info p {
+  margin-bottom: 32px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 200;
+}
+.modal .hide-btn {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  font-size: 32px;
+  font-weight: 300;
+  color: #fff;
+  cursor: pointer;
+}
+.modal .hide-btn:hover {
+  color: #ccc;
+}
+.invisible {
+  opacity: 0;
+  pointer-events: none;
+}
+.copyright {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  color: #c7c7c7;
+  font-weight: 400;
+  font-size: 12px;
+}
+.toggle-images {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #fff;
+  cursor: pointer;
+}
+.toggle-images.visible {
+  display: block;
+}
+.toggle-images.enable {
+  background: #16be6b;
+}
+.toggle-images.disable {
+  background: #ed4040;
+}
+

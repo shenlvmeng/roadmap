@@ -25,7 +25,7 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
     },
     "include": [
         "./src/**/*"

@@ -42,7 +42,7 @@ export async function convert(path: string) {
                     lat: point.lat,
                     lon: point.lon,
                     elevation: elevation ? +elevation.toFixed(2) : 0,
-                    timestamp: +time
+                    timestamp: +time - 8 * 60 * 60 * 1000
                 };
             });
             resolve(points);

@@ -1,6 +1,6 @@
 {
   "name": "roadmap",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Enjoy all your gps loci on Baidu map.",
   "main": "index.js",
   "build": {

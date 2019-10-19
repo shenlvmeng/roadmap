@@ -241,7 +241,7 @@ async function run() {
             $("#altitude")!.innerHTML = info.altitude.toFixed(3);
             $("#longitude")!.innerHTML = info.longitude.toFixed(5);
             $("#latitude")!.innerHTML = info.latitude.toFixed(5);
-            ($("#photo") as HTMLImageElement).src = `https://s2.ax1x.com/${t.dataset.key.replace(/-/g, "/")}.md.jpg`;
+            ($("#photo") as HTMLImageElement).src = `https://s2.ax1x.com/${t.dataset.key.replace(/-/g, "/")}.jpg`;
             $("#create-time")!.innerHTML = `${info.time.slice(0, 11).replace(/:/g, "-")}${info.time.slice(11)}`;
         }
     });

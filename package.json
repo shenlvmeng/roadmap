@@ -113,7 +113,7 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.0.1",
     "gpx-parse": "^0.10.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "rimraf": "^3.0.0",
     "write": "^1.0.3"
   }

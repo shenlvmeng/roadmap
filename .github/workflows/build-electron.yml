@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - name: macOS
-            os: macos-13
+            os: macos-15
             artifact: roadmap-macos
             package-args: --mac zip
             path: build/*-mac.zip

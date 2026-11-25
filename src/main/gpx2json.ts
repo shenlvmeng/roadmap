@@ -1,4 +1,4 @@
-import gpxParse from "gpx-parse";
+import gpxParse from "gpx-parse/lib/gpx-parse";
 import writeFile from "write";
 import * as path from "path";
 

@@ -84,6 +84,8 @@
             z-index:500;
         }
         .BMapLabel {
+            position:relative;
+            background:#fff;
             border:1px solid #eee!important;
             box-shadow:0 1px 6px rgba(0,0,0,.2);
         }
@@ -171,6 +173,7 @@
         }
     </style>
     <title><%=title%></title>
+    <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 </head>
 <body>
     <div id="map"></div>
@@ -204,7 +207,8 @@
     <div id="toggle" class="toggle-images error">关闭图片展示</div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
-<script src="https://api.map.baidu.com/api?v=2.0&ak=K4lj4WauSIagEIiRkVY0lVt6IGgR6WM4"></script>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="./portal/bmap-compat.js"></script>
 <script>
     (function(){
         // axis part
@@ -469,12 +473,6 @@
         }
         var map = new BMap.Map("map");
         map.centerAndZoom("襄阳"); 
-        map.addControl(new BMap.MapTypeControl({
-            mapTypes:[
-                BMAP_NORMAL_MAP,
-                BMAP_HYBRID_MAP
-            ]
-        }));     
         map.enableScrollWheelZoom(true);
         map.addEventListener('click', function(event){
             clear();

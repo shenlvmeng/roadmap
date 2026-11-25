@@ -1,7 +1,7 @@
 {
   "name": "roadmap",
-  "version": "1.0.2",
-  "description": "Enjoy all your gps loci on Baidu map.",
+  "version": "1.0.3",
+  "description": "Enjoy all your GPS tracks on an open map.",
   "main": "main/index.js",
   "homepage": "https://github.com/shenlvmeng/roadmap",
   "repository": "https://github.com/shenlvmeng/roadmap",

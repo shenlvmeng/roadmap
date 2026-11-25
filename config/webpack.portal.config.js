@@ -28,7 +28,7 @@ module.exports = merge(base, {
             new TerserPlugin({
                 parallel: true,
                 sourceMap: true,
-                cache: true
+                cache: false
             })
         ]
     }

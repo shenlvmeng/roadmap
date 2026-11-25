@@ -1,5 +1,5 @@
 import { convert } from '../src/main/gpx2json';
-import { wgs2bd } from '../src/main/axis';
+import { bd2wgs, wgs2bd } from '../src/main/axis';
 import * as path from 'path';
 
 describe('gpx file to json test', () => {
@@ -20,7 +20,7 @@ describe('gpx file to json test', () => {
     });
 });
 
-describe('test baidu axis convert', () => {
+describe('test map axis convert', () => {
     let lat: number;
     let lon: number;
     beforeAll(async () => {
@@ -31,13 +31,9 @@ describe('test baidu axis convert', () => {
     });
 
     it('convert successfully', () => {
-        const res = wgs2bd({ lat, lon });
-        expect(res).not.toBeNull();
-        expect(res.lat).toBeDefined();
-        expect(res.lat).toBeDefined();
-        expect(res.lat).not.toBeGreaterThan(90);
-        expect(res.lat).not.toBeLessThan(-90);
-        expect(res.lon).not.toBeGreaterThan(180);
-        expect(res.lon).not.toBeLessThan(-180);
+        const wgs = bd2wgs({ lat, lon });
+        const res = wgs2bd(wgs);
+        expect(Math.abs(res.lat - lat)).toBeLessThan(0.0001);
+        expect(Math.abs(res.lon - lon)).toBeLessThan(0.0001);
     });
 });

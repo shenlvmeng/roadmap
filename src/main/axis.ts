@@ -178,3 +178,9 @@ export function wgs2bd(pos: { lat: number; lon: number }) {
     const gcj = gcj_encrypt(lat, lon);
     return bd_encrypt(gcj.lat, gcj.lon);
 }
+
+export function bd2wgs(pos: { lat: number; lon: number }) {
+    const { lat, lon } = pos;
+    const gcj = bd_decrypt(lat, lon);
+    return gcj_decrypt(gcj.lat, gcj.lon);
+}

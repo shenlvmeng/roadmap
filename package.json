@@ -1,7 +1,7 @@
 {
   "name": "roadmap",
-  "version": "1.0.2",
-  "description": "Enjoy all your gps loci on Baidu map.",
+  "version": "1.0.3",
+  "description": "Enjoy all your GPS tracks on an open map.",
   "main": "index.js",
   "build": {
     "appId": "com.example.traces",
@@ -101,13 +101,14 @@
     "tslint-config-airbnb": "^5.11.1",
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.1",
-    "webpack": "^4.26.0",
+    "webpack": "^4.47.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "admin-tools": "^1.0.3",
     "date-fns": "^1.30.1",
     "electron": "^4.0.2",
     "electron-devtools-installer": "^2.2.4",

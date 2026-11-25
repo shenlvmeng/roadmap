@@ -32,7 +32,7 @@ module.exports = merge({
             new TerserPlugin({
                 parallel: true,
                 sourceMap: true,
-                cache: true
+                cache: false
             })
         ]
     }

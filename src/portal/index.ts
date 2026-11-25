@@ -1,8 +1,7 @@
 declare var BMap: any;
-declare var BMAP_NORMAL_MAP: any;
-declare var BMAP_HYBRID_MAP: any;
 declare var EXIF: any;
 
+import "./bmap-compat";
 import { wgs2bd } from "../main/axis";
 import { Track } from "../main/gpx2json";
 import "./index.less";
@@ -59,6 +58,10 @@ function parseTime(time: number): string {
 }
 
 // 业务方法
+function trimAdminSuffix(name: string): string {
+    return name.replace(/(特别行政区|壮族自治区|回族自治区|维吾尔自治区|自治区|自治州|地区|盟|省|市)$/g, "");
+}
+
 function renderLocationList(addressComponents: any) {
     const city = addressComponents.city;
     const province = addressComponents.province;
@@ -68,8 +71,8 @@ function renderLocationList(addressComponents: any) {
     if (city && cities.indexOf(city) === -1) {
         cities.push(city);
     }
-    $("#provinces")!.innerHTML = provinces.map(p => p.slice(0, -1)).join(", ");
-    $("#cities")!.innerHTML = cities.map(c => `<span class="city">${c.slice(0, -1)}</span>`).join(", ");
+    $("#provinces")!.innerHTML = provinces.map(trimAdminSuffix).join(", ");
+    $("#cities")!.innerHTML = cities.map(c => `<span class="city">${trimAdminSuffix(c)}</span>`).join(", ");
 }
 function clearActivePoly() {
     if (activePoly) {
@@ -168,11 +171,6 @@ async function run() {
     // 初始化地图
     map = new BMap.Map("map");
     map.centerAndZoom(city || "北京");
-    map.addControl(
-        new BMap.MapTypeControl({
-            mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
-        })
-    );
     map.enableScrollWheelZoom(true);
     map.addEventListener("click", () => {
         clearActivePoly();
@@ -241,7 +239,7 @@ async function run() {
             $("#altitude")!.innerHTML = info.altitude.toFixed(3);
             $("#longitude")!.innerHTML = info.longitude.toFixed(5);
             $("#latitude")!.innerHTML = info.latitude.toFixed(5);
-            ($("#photo") as HTMLImageElement).src = `https://s2.ax1x.com/${t.dataset.key.replace(/-/g, "/")}.jpg`;
+            ($("#photo") as HTMLImageElement).src = `./data/images/${info.title}.jpg`;
             $("#create-time")!.innerHTML = `${info.time.slice(0, 11).replace(/:/g, "-")}${info.time.slice(11)}`;
         }
     });
